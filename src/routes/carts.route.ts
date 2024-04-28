@@ -9,11 +9,12 @@ import validateNumber from "../validators/number";
 
 const cartsRouter: Router = Router();
 
+const cartManagerDB: CartManagerDB = new CartManagerDB();
+
 /** GET ENDPOINTS */
 // @@@@
 cartsRouter.get("/:cid", async (req: Request, res: Response) => {
   try {
-    const cartManagerDB: CartManagerDB = new CartManagerDB();
     const cid: string = req.params.cid;
     const cart: DbCart = await cartManagerDB.getCartById(cid);
     res.json(cart);
@@ -25,7 +26,6 @@ cartsRouter.get("/:cid", async (req: Request, res: Response) => {
 // @@@@
 cartsRouter.get("/", async (req: Request, res: Response) => {
   try {
-    const cartManagerDB: CartManagerDB = new CartManagerDB();
     // const cid: string = req.params.cid;
     const cart: DbCart[] = await cartManagerDB.getCarts();
     res.json(cart);
@@ -38,7 +38,6 @@ cartsRouter.get("/", async (req: Request, res: Response) => {
 // @@@@
 cartsRouter.post("/", async (req: Request, res: Response) => {
   try {
-    const cartManagerDB: CartManagerDB = new CartManagerDB();
     await cartManagerDB.createCart();
     res.json(successStatus);
   } catch (error) {
@@ -51,7 +50,6 @@ cartsRouter.post(
   "/:cid" + productRoute + "/:pid",
   async (req: Request, res: Response) => {
     try {
-      const cartManagerDB: CartManagerDB = new CartManagerDB();
       const cid: string = req.params.cid;
       const pid: string = req.params.pid;
       await cartManagerDB.addProductToCart(cid, pid);
@@ -66,7 +64,6 @@ cartsRouter.post(
 // @@@@
 cartsRouter.put("/:cid", async (req: Request, res: Response) => {
   try {
-    const cartManagerDB: CartManagerDB = new CartManagerDB();
     const cid: string = req.params.cid;
     const updateProducts: ProductCart[] = validateProductCart(req.body);
     await cartManagerDB.updateCart(cid, updateProducts);
@@ -81,7 +78,6 @@ cartsRouter.put(
   "/:cid" + productRoute + "/:pid",
   async (req: Request, res: Response) => {
     try {
-      const cartManagerDB: CartManagerDB = new CartManagerDB();
       const cid: string = req.params.cid;
       const pid: string = req.params.pid;
       const quantity: number = validateNumber(req.body);
@@ -99,7 +95,6 @@ cartsRouter.delete(
   "/:cid" + productRoute + "/:pid",
   async (req: Request, res: Response) => {
     try {
-      const cartManagerDB: CartManagerDB = new CartManagerDB();
       const cid: string = req.params.cid;
       const pid: string = req.params.pid;
       await cartManagerDB.removeProductFromCart(cid, pid);
@@ -113,7 +108,6 @@ cartsRouter.delete(
 // @@@@
 cartsRouter.delete("/:cid", async (req: Request, res: Response) => {
   try {
-    const cartManagerDB: CartManagerDB = new CartManagerDB();
     const cid: string = req.params.cid;
     await cartManagerDB.clearCart(cid);
     res.json(successStatus);
