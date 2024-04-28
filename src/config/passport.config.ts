@@ -8,7 +8,6 @@ import dbUser from "../interfaces/dbUser";
 import "dotenv/config";
 import GitHubStrategy from "passport-github2";
 import { CartManagerDB } from "../dao/services/CartManagerDB";
-import Cart from "../interfaces/Cart";
 import DbCart from "../interfaces/DbCart";
 
 const githubClientId = process.env.GITHUB_CLIENT_ID;
@@ -89,6 +88,7 @@ const initializePassport = () => {
             email: profile._json.email,
           });
           if (!user) {
+            const newCart: DbCart = await cartManagerDB.createCart();
             const newUser = {
               firstName: profile._json.name || "firstName",
               lastName: profile._json.name || "lastName",
@@ -99,6 +99,7 @@ const initializePassport = () => {
               password: " ",
               // rol: profile._json.type.toLowerCase(),
               rol: "user",
+              cart: newCart._id,
             };
             const result = await usersModel.create(newUser);
             done(null, result);

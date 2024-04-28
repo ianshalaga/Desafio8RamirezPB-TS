@@ -90,6 +90,7 @@ sessionsRouter.post(
       email: req.user.email,
       age: req.user.age,
       rol: req.user.rol,
+      cart: req.user.cart,
     };
     res.status(200).json(successStatus);
   }
@@ -126,6 +127,7 @@ sessionsRouter.get(
       email: req.user.email,
       age: req.user.age,
       rol: req.user.rol,
+      cart: req.user.cart,
     };
     console.log(req.session.user);
     res.redirect("/products");

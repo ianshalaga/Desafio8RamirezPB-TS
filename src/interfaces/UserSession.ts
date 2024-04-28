@@ -3,6 +3,7 @@ interface UserSession {
   email: string;
   age: number;
   rol: string;
+  cart: string;
 }
 
 export default UserSession;
