@@ -1,10 +1,10 @@
 import cartsModel from "../models/carts.model";
 import DbCart from "../../interfaces/DbCart";
 import Cart from "../../interfaces/Cart";
-import ProductManagerDB from "./ProductManagerDB";
-import DbProduct from "../../interfaces/DbProduct";
+// import ProductManagerDB from "./ProductManagerDB";
+// import DbProduct from "../../interfaces/DbProduct";
 import ProductCart from "../../interfaces/ProductCart";
-import { productsModel } from "../models/products.model";
+// import { productsModel } from "../models/products.model";
 
 export class CartManagerDB {
   constructor() {}
@@ -24,10 +24,13 @@ export class CartManagerDB {
   }
 
   // @@@@
-  async createCart(): Promise<void> {
+  async createCart(): Promise<DbCart> {
     try {
       const cart: Cart = { products: [] };
-      await cartsModel.create(cart);
+      // await cartsModel.create(cart);
+      const dbCartDoc = await cartsModel.create(cart);
+      const dbCart: DbCart = dbCartDoc.toObject();
+      return dbCart;
     } catch (error) {
       throw error;
     }

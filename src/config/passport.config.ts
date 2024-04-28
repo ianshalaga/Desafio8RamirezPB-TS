@@ -7,11 +7,16 @@ import User from "../interfaces/User";
 import dbUser from "../interfaces/dbUser";
 import "dotenv/config";
 import GitHubStrategy from "passport-github2";
+import { CartManagerDB } from "../dao/services/CartManagerDB";
+import Cart from "../interfaces/Cart";
+import DbCart from "../interfaces/DbCart";
 
 const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 const LocalStrategy = passportLocal.Strategy;
+
+const cartManagerDB: CartManagerDB = new CartManagerDB();
 
 const initializePassport = () => {
   // Register
@@ -27,6 +32,7 @@ const initializePassport = () => {
             console.log("El usuario ya existe");
             return done(null, false); // User exist. No error.
           }
+          const newCart: DbCart = await cartManagerDB.createCart();
           const newUser = {
             firstName,
             lastName,
@@ -34,6 +40,7 @@ const initializePassport = () => {
             age,
             password: createHash(password),
             rol,
+            cart: newCart._id,
           };
           const result = await usersModel.create(newUser);
           return done(null, result); // User successfully added
